@@ -1,48 +1,45 @@
 package pbo.model;
 
-//12S23001 - Kevin Gultom
-//12S23010 - Tiffany Butar-butar
-
 import java.io.Serializable;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "enrollments")
+@IdClass(EnrollmentPK.class)
 public class Enrollment implements Serializable {
 
     @Id
     @ManyToOne
     @JoinColumn(name = "student_nim", referencedColumnName = "nim")
-    private Student peserta;
+    private Student student;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "course_code", referencedColumnName = "kode")
-    private Course matakuliah;
+    private Course course;
 
     public Enrollment() {
-        // Default constructor
     }
 
-    public Enrollment(Student peserta, Course matakuliah) {
-        this.peserta = peserta;
-        this.matakuliah = matakuliah;
+    public Enrollment(Student student, Course course) {
+        this.student = student;
+        this.course = course;
     }
 
     public Student getStudent() {
-        return peserta;
+        return student;
     }
 
-    public void setStudent(Student peserta) {
-        this.peserta = peserta;
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
     public Course getCourse() {
-        return matakuliah;
+        return course;
     }
 
-    public void setCourse(Course matakuliah) {
-        this.matakuliah = matakuliah;
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     @Override
@@ -51,11 +48,11 @@ public class Enrollment implements Serializable {
         if (!(obj instanceof Enrollment)) return false;
 
         Enrollment other = (Enrollment) obj;
-        return peserta.equals(other.peserta) && matakuliah.equals(other.matakuliah);
+        return student.equals(other.student) && course.equals(other.course);
     }
 
     @Override
     public int hashCode() {
-        return 31 * peserta.hashCode() + matakuliah.hashCode();
+        return 31 * student.hashCode() + course.hashCode();
     }
 }

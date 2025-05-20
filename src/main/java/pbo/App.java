@@ -1,5 +1,6 @@
 package pbo;
-
+ // 12S23001 Kevin Gultom
+// 12S23010 Tiffani Butar-butar
 import java.util.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -88,7 +89,7 @@ public class App {
                 case "student-show-all":
                     List<Student> allStudents = em.createQuery("SELECT s FROM Student s ORDER BY s.nim", Student.class).getResultList();
                     for (Student s : allStudents) {
-                        System.out.println(s.getNIM() + "|" + s.getNama() + "|" + s.getProgramstudi());
+                        System.out.println(s.getNim() + "|" + s.getNama() + "|" + s.getProgramStudi());
                     }
                     break;
 
@@ -103,7 +104,7 @@ public class App {
                     String targetNIM = parts[1];
                     Student student = em.find(Student.class, targetNIM);
                     if (student != null) {
-                        System.out.println(student.getNIM() + "|" + student.getNama() + "|" + student.getProgramstudi());
+                        System.out.println(student.getNim() + "|" + student.getNama() + "|" + student.getProgramStudi());
 
                         List<Course> studentCourses = em.createQuery(
                             "SELECT e.course FROM Enrollment e WHERE e.student.nim = :nim ORDER BY e.course.kode", Course.class)
