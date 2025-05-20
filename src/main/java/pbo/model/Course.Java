@@ -5,26 +5,14 @@ package pbo.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
 
-@Entity
-@Table(name = "courses")
 public class Course {
 
-    @Id
-    @Column(name = "kode", nullable = false)
     private String kode;
-
-    @Column(name = "nama", nullable = false)
     private String nama;
-
-    @Column(name = "semester", nullable = false)
     private int semester;
-
-    @Column(name = "kredit", nullable = false)
     private int kredit;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Enrollment> enrollments = new ArrayList<>();
 
     public Course(String kode, String nama, int semester, int kredit) {

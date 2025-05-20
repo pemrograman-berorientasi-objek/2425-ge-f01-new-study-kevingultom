@@ -8,6 +8,7 @@ import pbo.model.Course;
 import pbo.model.Enrollment;
 import pbo.model.Student;
 
+
 public class App {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);

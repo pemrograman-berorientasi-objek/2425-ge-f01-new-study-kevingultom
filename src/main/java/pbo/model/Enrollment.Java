@@ -3,26 +3,10 @@ package pbo.model;
 //12S23001 - Kevin Gultom
 //12S23010 - Tiffany Butar-butar
 
-import java.io.Serializable;
-import javax.persistence.*;
+public class Enrollment {
 
-@Entity
-@Table(name = "enrollments")
-public class Enrollment implements Serializable {
-
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "student_nim", referencedColumnName = "nim")
     private Student peserta;
-
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "course_code", referencedColumnName = "kode")
     private Course matakuliah;
-
-    public Enrollment() {
-        // Default constructor
-    }
 
     public Enrollment(Student peserta, Course matakuliah) {
         this.peserta = peserta;
