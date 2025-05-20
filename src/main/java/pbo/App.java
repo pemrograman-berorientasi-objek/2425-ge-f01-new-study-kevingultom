@@ -2,8 +2,8 @@ package pbo;
 
 //12S23001 - Kevin Gultom
 //12S23010 - Tiffany Butar-butar
-import java.util.*;
 
+import java.util.*;
 import pbo.model.Course;
 import pbo.model.Enrollment;
 import pbo.model.Student;
@@ -25,18 +25,18 @@ public class App {
 
             switch (command) {
                 case "student-add":
-                    String nim = parts[1];
-                    String nama = parts[2];
-                    String prodi = parts[3];
+                    String NIM = parts[1];
+                    String Nama = parts[2];
+                    String Programstudi = parts[3];
 
-                    if (!students.containsKey(nim)) {
-                        students.put(nim, new Student(nim, nama, prodi));
+                    if (!students.containsKey(NIM)) {
+                        students.put(NIM, new Student(NIM, Nama, Programstudi));
                     }
                     break;
 
                 case "student-show-all":
                     for (Student student : students.values()) {
-                        System.out.println(student.getNim() + "|" + student.getNama() + "|" + student.getProdi());
+                        System.out.println(student.getNIM() + "|" + student.getNama() + "|" + student.getProgramstudi());
                     }
                     break;
 
@@ -58,15 +58,15 @@ public class App {
                     break;
 
                 case "enroll":
-                    String enrollNim = parts[1];
+                    String enrollNIM = parts[1];
                     String enrollKode = parts[2];
-                    Student enrollStudent = students.get(enrollNim);
+                    Student enrollStudent = students.get(enrollNIM);
                     Course enrollCourse = courses.get(enrollKode);
 
                     if (enrollStudent != null && enrollCourse != null) {
                         boolean alreadyEnrolled = false;
                         for (Enrollment e : enrollments) {
-                            if (e.getStudent().getNim().equals(enrollNim) &&
+                            if (e.getStudent().getNIM().equals(enrollNIM) &&
                                 e.getCourse().getKode().equals(enrollKode)) {
                                 alreadyEnrolled = true;
                                 break;
@@ -79,14 +79,14 @@ public class App {
                     break;
 
                 case "student-show":
-                    String targetNim = parts[1];
-                    Student student = students.get(targetNim);
+                    String targetNIM = parts[1];
+                    Student student = students.get(targetNIM);
                     if (student != null) {
-                        System.out.println(student.getNim() + "|" + student.getNama() + "|" + student.getProdi());
+                        System.out.println(student.getNIM() + "|" + student.getNama() + "|" + student.getProgramstudi());
 
                         List<Course> studentCourses = new ArrayList<>();
                         for (Enrollment e : enrollments) {
-                            if (e.getStudent().getNim().equals(targetNim)) {
+                            if (e.getStudent().getNIM().equals(targetNIM)) {
                                 Course c = e.getCourse();
                                 if (c != null) {
                                     studentCourses.add(c);

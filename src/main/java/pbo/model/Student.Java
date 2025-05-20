@@ -1,9 +1,11 @@
 package pbo.model;
+
 //12S23001 - Kevin Gultom
 //12S23010 - Tiffany Butar-butar
-import javax.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "students")
@@ -11,13 +13,13 @@ public class Student {
 
     @Id
     @Column(name = "nim", nullable = false)
-    private String nim;
+    private String NIM;
 
     @Column(name = "nama", nullable = false)
-    private String nama;
+    private String Nama;
 
     @Column(name = "prodi", nullable = false)
-    private String prodi;
+    private String Programstudi;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(
@@ -27,23 +29,43 @@ public class Student {
     )
     private List<Course> courses = new ArrayList<>();
 
-    public Student(String nim, String nama, String prodi) {
-        this.nim = nim;
-        this.nama = nama;
-        this.prodi = prodi;
+    public Student(String NIM, String Nama, String Programstudi) {
+        this.NIM = NIM;
+        this.Nama = Nama;
+        this.Programstudi = Programstudi;
     }
 
-    public String getNim() { return nim; }
-    public void setNim(String nim) { this.nim = nim; }
+    public String getNIM() {
+        return NIM;
+    }
 
-    public String getNama() { return nama; }
-    public void setNama(String nama) { this.nama = nama; }
+    public void setNIM(String NIM) {
+        this.NIM = NIM;
+    }
 
-    public String getProdi() { return prodi; }
-    public void setProdi(String prodi) { this.prodi = prodi; }
+    public String getNama() {
+        return Nama;
+    }
 
-    public List<Course> getCourses() { return courses; }
-    public void setCourses(List<Course> courses) { this.courses = courses; }
+    public void setNama(String Nama) {
+        this.Nama = Nama;
+    }
+
+    public String getProgramstudi() {
+        return Programstudi;
+    }
+
+    public void setProgramstudi(String Programstudi) {
+        this.Programstudi = Programstudi;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courseList) {
+        this.courses = courseList;
+    }
 
     public boolean enrollCourse(Course course) {
         if (!courses.contains(course)) {
@@ -55,19 +77,19 @@ public class Student {
 
     @Override
     public String toString() {
-        return nim + "|" + nama + "|" + prodi;
+        return NIM + "|" + Nama + "|" + Programstudi;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof Student)) return false;
-        Student student = (Student) obj;
-        return nim.equals(student.nim);
+        Student other = (Student) obj;
+        return NIM.equals(other.NIM);
     }
 
     @Override
     public int hashCode() {
-        return nim.hashCode();
+        return NIM.hashCode();
     }
 }

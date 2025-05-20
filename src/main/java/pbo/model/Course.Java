@@ -1,9 +1,11 @@
 package pbo.model;
+
 //12S23001 - Kevin Gultom
 //12S23010 - Tiffany Butar-butar
-import javax.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "courses")
@@ -32,23 +34,48 @@ public class Course {
         this.kredit = kredit;
     }
 
-    public String getKode() { return kode; }
-    public void setKode(String kode) { this.kode = kode; }
+    public String getKode() {
+        return kode;
+    }
 
-    public String getNama() { return nama; }
-    public void setNama(String nama) { this.nama = nama; }
+    public void setKode(String kode) {
+        this.kode = kode;
+    }
 
-    public int getSemester() { return semester; }
-    public void setSemester(int semester) { this.semester = semester; }
+    public String getNama() {
+        return nama;
+    }
 
-    public int getKredit() { return kredit; }
-    public void setKredit(int kredit) { this.kredit = kredit; }
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
 
-    public List<Enrollment> getEnrollments() { return enrollments; }
-    public void setEnrollments(List<Enrollment> enrollments) { this.enrollments = enrollments; }
+    public int getSemester() {
+        return semester;
+    }
+
+    public void setSemester(int semester) {
+        this.semester = semester;
+    }
+
+    public int getKredit() {
+        return kredit;
+    }
+
+    public void setKredit(int kredit) {
+        this.kredit = kredit;
+    }
+
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
+    }
+
+    public void setEnrollments(List<Enrollment> daftarEnrollments) {
+        this.enrollments = daftarEnrollments;
+    }
 
     public void addEnrollment(Enrollment enrollment) {
-        enrollments.add(enrollment);
+        this.enrollments.add(enrollment);
         enrollment.setCourse(this);
     }
 
@@ -61,8 +88,8 @@ public class Course {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof Course)) return false;
-        Course course = (Course) obj;
-        return kode.equals(course.kode);
+        Course other = (Course) obj;
+        return kode.equals(other.kode);
     }
 
     @Override
