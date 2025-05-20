@@ -1,44 +1,125 @@
 package pbo;
 
-/*
- * 12S23001 Kevin Gultom
- * 12S23010 Tiffani Butar-butar
- */
+//12S23001 - Kevin Gultom
+//12S23010 - Tiffany Butar-butar
 
-import javax.persistence.*;
-import java.util.Scanner;
-import pbo.model.Executor;
+import java.util.*;
+import pbo.model.Course;
+import pbo.model.Enrollment;
+import pbo.model.Student;
 
 public class App {
-    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("f01");
-    private static final EntityManager em = emf.createEntityManager();
-    private static final Executor executor = new Executor(em);
-
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        while (true) {
-            String input = scanner.nextLine().trim();
-            if (input.equals("---")) break;
 
-            if (input.startsWith("student-add#")) {
-                String[] tokens = input.split("#");
-                executor.addStudent(tokens[1], tokens[2], tokens[3]);
-            } else if (input.equals("student-show-all")) {
-                executor.showAllStudents();
-            } else if (input.startsWith("course-add#")) {
-                String[] tokens = input.split("#");
-                executor.addCourse(tokens[1], tokens[2], Integer.parseInt(tokens[3]), Integer.parseInt(tokens[4]));
-            } else if (input.equals("course-show-all")) {
-                executor.showAllCourses();
-            } else if (input.startsWith("enroll#")) {
-                String[] tokens = input.split("#");
-                executor.enrollStudent(tokens[1], tokens[2]);
-            } else if (input.startsWith("student-show#")) {
-                String nim = input.split("#")[1];
-                executor.showStudentDetail(nim);
+        Map<String, Student> students = new TreeMap<>();
+        Map<String, Course> courses = new TreeMap<>();
+        List<Enrollment> enrollments = new ArrayList<>();
+        List<String> commands = new ArrayList<>();
+
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine().trim();
+            if (line.equals("---")) break;
+            commands.add(line);
+        }
+
+        // Proses perintah
+        for (String line : commands) {
+            String[] parts = line.split("#");
+            String command = parts[0];
+
+            switch (command) {
+                case "student-add":
+                    String NIM = parts[1];
+                    String Nama = parts[2];
+                    String Programstudi = parts[3];
+
+                    if (!students.containsKey(NIM)) {
+                        students.put(NIM, new Student(NIM, Nama, Programstudi));
+                    }
+                    break;
+
+                case "course-add":
+                    String kode = parts[1];
+                    String namaMatkul = parts[2];
+                    int semester = Integer.parseInt(parts[3]);
+                    int kredit = Integer.parseInt(parts[4]);
+
+                    if (!courses.containsKey(kode)) {
+                        courses.put(kode, new Course(kode, namaMatkul, semester, kredit));
+                    }
+                    break;
+
+                case "enroll":
+                    String enrollNIM = parts[1];
+                    String enrollKode = parts[2];
+                    Student enrollStudent = students.get(enrollNIM);
+                    Course enrollCourse = courses.get(enrollKode);
+
+                    if (enrollStudent != null && enrollCourse != null) {
+                        boolean alreadyEnrolled = false;
+                        for (Enrollment e : enrollments) {
+                            if (e.getStudent().getNIM().equals(enrollNIM) &&
+                                e.getCourse().getKode().equals(enrollKode)) {
+                                alreadyEnrolled = true;
+                                break;
+                            }
+                        }
+                        if (!alreadyEnrolled) {
+                            enrollments.add(new Enrollment(enrollStudent, enrollCourse));
+                        }
+                    }
+                    break;
             }
         }
-        em.close();
-        emf.close();
+
+        // Cetak hasil setelah "---"
+        for (String line : commands) {
+            String[] parts = line.split("#");
+            String command = parts[0];
+
+            switch (command) {
+                case "student-show-all":
+                    for (Student student : students.values()) {
+                        System.out.println(student.getNIM() + "|" + student.getNama() + "|" + student.getProgramstudi());
+                    }
+                    break;
+
+                case "course-show-all":
+                    for (Course course : courses.values()) {
+                        System.out.println(course.getKode() + "|" + course.getNama() + "|" + course.getSemester() + "|" + course.getKredit());
+                    }
+                    break;
+
+                case "student-show":
+                    String targetNIM = parts[1];
+                    Student student = students.get(targetNIM);
+                    if (student != null) {
+                        System.out.println(student.getNIM() + "|" + student.getNama() + "|" + student.getProgramstudi());
+
+                        List<Course> studentCourses = new ArrayList<>();
+                        for (Enrollment e : enrollments) {
+                            if (e.getStudent().getNIM().equals(targetNIM)) {
+                                Course c = e.getCourse();
+                                if (c != null) {
+                                    studentCourses.add(c);
+                                }
+                            }
+                        }
+
+                        studentCourses.sort(Comparator.comparing(Course::getKode));
+
+                        for (Course c : studentCourses) {
+                            System.out.println(c.getKode() + "|" + c.getNama() + "|" + c.getSemester() + "|" + c.getKredit());
+                        }
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        scanner.close();
     }
 }
