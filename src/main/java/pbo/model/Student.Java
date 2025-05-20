@@ -1,25 +1,63 @@
 package pbo.model;
 
+/**
+ *
+ * 12S23001 Kevin Gultom
+ * 12S23010 Tiffani Butar-butar
+ * 
+ */
+import javax.persistence.*;
+
+
+@Entity
+@Table(name = "student")
 public class Student {
-    private String NIM;
-    private String Nama;
-    private String Programstudi;
+    @Id
+    @Column(name = "student_id", nullable = false, length = 255)
+    private String studentId;
 
-    public Student(String NIM, String Nama, String Programstudi) {
-        this.NIM = NIM;
-        this.Nama = Nama;
-        this.Programstudi = Programstudi;
+    @Column(name = "student_name", nullable = false, length = 255)
+
+    private String studentName;
+
+    @Column(name = "study_program", nullable = false, length = 25)
+    private String studyProgram;
+
+    public Student() {    }
+
+    public Student(String studentId, String studentName, String studyProgram) {
+        this.studentId = studentId;
+        this.studentName = studentName;
+        this.studyProgram = studyProgram;
     }
 
-    public String getNIM() {
-        return NIM;
+    public String getStudentId() {
+        return studentId;
     }
 
-    public String getNama() {
-        return Nama;
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
     }
 
-    public String getProgramstudi() {
-        return Programstudi;
+    public String getStudentName() {
+        return studentName;
     }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    public String getStudyProgram() {
+        return studyProgram;
+    }
+
+    public void setStudyProgram(String studyProgram) {
+        this.studyProgram = studyProgram;
+    }
+
+    @Override
+    public String toString() {
+        return studentId + "|" + studentName + "|" + studyProgram;
+    }
+
 }

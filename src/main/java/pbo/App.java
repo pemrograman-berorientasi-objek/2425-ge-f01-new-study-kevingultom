@@ -1,126 +1,66 @@
 package pbo;
 
-//12S23001 - Kevin Gultom
-//12S23010 - Tiffany Butar-butar
+/**
+ *
+ * 12S23001 Kevin Gultom
+ * 12S23010 Tiffani Butar-butar
+ * 
+ */
 
 import java.util.*;
-import pbo.model.Course;
-import pbo.model.Enrollment;
-import pbo.model.Student;
-
+import javax.persistence.*;
+import pbo.model.*;
 
 public class App {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
 
-        Map<String, Student> students = new TreeMap<>();
-        Map<String, Course> courses = new TreeMap<>();
-        List<Enrollment> enrollments = new ArrayList<>();
-        List<String> commands = new ArrayList<>();
+  private static EntityManagerFactory factory;
+  private static EntityManager entityManager;
 
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine().trim();
-            if (line.equals("---")) break;
-            commands.add(line);
+  public static void main(String[] args) {
+    factory = Persistence.createEntityManagerFactory("study_plan_pu");
+    entityManager = factory.createEntityManager();
+    drivApp.initializeEntityManager();
+    drivApp.cleanTableStudent();
+    drivApp.cleanTableCourse();
+    drivApp.cleanTableEnrollment();
+
+    String str;
+
+    Scanner scanner = new Scanner(System.in);
+
+    while (true) {
+      str = scanner.nextLine();
+
+      if (str.equals("---")) {
+        break;
+      } else {
+        String split[] = str.split("#");
+
+        switch (split[0]) {
+          case "student-add":
+            drivApp.CreateStudent(split[1], split[2], split[3]);
+            break;
+          case "student-show-all":
+            drivApp.ShowStudent();
+            break;
+          case "course-add":
+            drivApp.createCourse(split[1], split[2], Integer.parseInt(split[3]), Integer.parseInt(split[4]));
+            break;
+          case "course-show-all":   
+            drivApp.ShowCourse();
+            break;
+          case "enroll":
+            drivApp.createEnroll(split[1], split[2]);
+            break;
+          case "student-show":
+            drivApp.ShowStudentDetail(split[1]);
+            break;
+          default:
+            break;
         }
+      }
 
-        // Proses perintah
-        for (String line : commands) {
-            String[] parts = line.split("#");
-            String command = parts[0];
-
-            switch (command) {
-                case "student-add":
-                    String NIM = parts[1];
-                    String Nama = parts[2];
-                    String Programstudi = parts[3];
-
-                    if (!students.containsKey(NIM)) {
-                        students.put(NIM, new Student(NIM, Nama, Programstudi));
-                    }
-                    break;
-
-                case "course-add":
-                    String kode = parts[1];
-                    String namaMatkul = parts[2];
-                    int semester = Integer.parseInt(parts[3]);
-                    int kredit = Integer.parseInt(parts[4]);
-
-                    if (!courses.containsKey(kode)) {
-                        courses.put(kode, new Course(kode, namaMatkul, semester, kredit));
-                    }
-                    break;
-
-                case "enroll":
-                    String enrollNIM = parts[1];
-                    String enrollKode = parts[2];
-                    Student enrollStudent = students.get(enrollNIM);
-                    Course enrollCourse = courses.get(enrollKode);
-
-                    if (enrollStudent != null && enrollCourse != null) {
-                        boolean alreadyEnrolled = false;
-                        for (Enrollment e : enrollments) {
-                            if (e.getStudent().getNIM().equals(enrollNIM) &&
-                                e.getCourse().getKode().equals(enrollKode)) {
-                                alreadyEnrolled = true;
-                                break;
-                            }
-                        }
-                        if (!alreadyEnrolled) {
-                            enrollments.add(new Enrollment(enrollStudent, enrollCourse));
-                        }
-                    }
-                    break;
-            }
-        }
-
-        // Cetak hasil setelah "---"
-        for (String line : commands) {
-            String[] parts = line.split("#");
-            String command = parts[0];
-
-            switch (command) {
-                case "student-show-all":
-                    for (Student student : students.values()) {
-                        System.out.println(student.getNIM() + "|" + student.getNama() + "|" + student.getProgramstudi());
-                    }
-                    break;
-
-                case "course-show-all":
-                    for (Course course : courses.values()) {
-                        System.out.println(course.getKode() + "|" + course.getNama() + "|" + course.getSemester() + "|" + course.getKredit());
-                    }
-                    break;
-
-                case "student-show":
-                    String targetNIM = parts[1];
-                    Student student = students.get(targetNIM);
-                    if (student != null) {
-                        System.out.println(student.getNIM() + "|" + student.getNama() + "|" + student.getProgramstudi());
-
-                        List<Course> studentCourses = new ArrayList<>();
-                        for (Enrollment e : enrollments) {
-                            if (e.getStudent().getNIM().equals(targetNIM)) {
-                                Course c = e.getCourse();
-                                if (c != null) {
-                                    studentCourses.add(c);
-                                }
-                            }
-                        }
-
-                        studentCourses.sort(Comparator.comparing(Course::getKode));
-
-                        for (Course c : studentCourses) {
-                            System.out.println(c.getKode() + "|" + c.getNama() + "|" + c.getSemester() + "|" + c.getKredit());
-                        }
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        scanner.close();
     }
+
+  }
 }

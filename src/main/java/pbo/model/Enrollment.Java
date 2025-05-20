@@ -1,45 +1,59 @@
+
 package pbo.model;
 
-//12S23001 - Kevin Gultom
-//12S23010 - Tiffany Butar-butar
+/**
+ *
+ * 12S23001 Kevin Gultom
+ * 12S23010 Tiffani Butar-butar
+ * 
+ */
+import javax.persistence.*;
+
+@Entity
+@Table(name = "enrollment")
 
 public class Enrollment {
+    private static int nextId = 1;
+    @Id
+    @Column(name = "id", nullable = false, length = 25)
+    private int id = 0;
 
-    private Student peserta;
-    private Course matakuliah;
+    @Column(name = "student_id", nullable = false, length = 25)
+    private String studentId;
+    @Column(name = "course_id", nullable = false, length = 25)
+    private String courseId;
 
-    public Enrollment(Student peserta, Course matakuliah) {
-        this.peserta = peserta;
-        this.matakuliah = matakuliah;
+    public Enrollment() {
     }
 
-    public Student getStudent() {
-        return peserta;
+    public Enrollment(String studentId, String courseId) {
+        this.id = nextId++;
+        this.studentId = studentId;
+        this.courseId = courseId;
     }
 
-    public void setStudent(Student peserta) {
-        this.peserta = peserta;
+    public int getId() {
+        return id;
     }
 
-    public Course getCourse() {
-        return matakuliah;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setCourse(Course matakuliah) {
-        this.matakuliah = matakuliah;
+    public String getStudentId() {
+        return studentId;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Enrollment)) return false;
-
-        Enrollment other = (Enrollment) obj;
-        return peserta.equals(other.peserta) && matakuliah.equals(other.matakuliah);
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
     }
 
-    @Override
-    public int hashCode() {
-        return 31 * peserta.hashCode() + matakuliah.hashCode();
+    public String getCourseId() {
+        return courseId;
     }
+
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
+    }
+
 }

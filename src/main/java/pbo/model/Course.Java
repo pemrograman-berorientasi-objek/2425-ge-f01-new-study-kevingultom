@@ -1,41 +1,53 @@
 package pbo.model;
 
-//12S23001 - Kevin Gultom
-//12S23010 - Tiffany Butar-butar
+import java.util.*;
+import javax.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
+//10S2202|Jaringan Komputer|4|3
+@Entity
+@Table(name = "course")
 public class Course {
+    @Id
+    @Column(name = "course_id", nullable = false, length = 255)
+    private String courseId;
 
-    private String kode;
-    private String nama;
+    @Column(name = "course_name", nullable = false, length = 255)
+    private String courseName;
+
+    @Column(name = "semester", nullable = false, length = 25)
     private int semester;
-    private int kredit;
+    @Column(name = "credit", nullable = false, length = 25)
+    private int credit;
+  
 
-    private List<Enrollment> enrollments = new ArrayList<>();
+    public Course() {
+        // empty constructor
+    }
 
-    public Course(String kode, String nama, int semester, int kredit) {
-        this.kode = kode;
-        this.nama = nama;
+    public Course(String courseId, String courseName, int semester, int credit) {
+        this.courseId = courseId;
+        this.courseName = courseName;
         this.semester = semester;
-        this.kredit = kredit;
+        this.credit = credit;
+        
+
     }
 
-    public String getKode() {
-        return kode;
+   
+    public String getCourseId() {
+        return courseId;
     }
 
-    public void setKode(String kode) {
-        this.kode = kode;
+    public void setCourseId(String courseId) {
+        this.courseId = courseId;
     }
 
-    public String getNama() {
-        return nama;
+    public String getCourseName() {
+        return courseName;
     }
 
-    public void setNama(String nama) {
-        this.nama = nama;
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
     public int getSemester() {
@@ -46,42 +58,19 @@ public class Course {
         this.semester = semester;
     }
 
-    public int getKredit() {
-        return kredit;
+    public int getCredit() {
+        return credit;
     }
 
-    public void setKredit(int kredit) {
-        this.kredit = kredit;
-    }
-
-    public List<Enrollment> getEnrollments() {
-        return enrollments;
-    }
-
-    public void setEnrollments(List<Enrollment> daftarEnrollments) {
-        this.enrollments = daftarEnrollments;
-    }
-
-    public void addEnrollment(Enrollment enrollment) {
-        this.enrollments.add(enrollment);
-        enrollment.setCourse(this);
+    public void setCredit(int credit) {
+        this.credit = credit;
     }
 
     @Override
     public String toString() {
-        return kode + "|" + nama + "|" + semester + "|" + kredit;
+        return courseId + "|" + courseName + "|" + semester + "|" + credit;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Course)) return false;
-        Course other = (Course) obj;
-        return kode.equals(other.kode);
-    }
+    
 
-    @Override
-    public int hashCode() {
-        return kode.hashCode();
-    }
 }
