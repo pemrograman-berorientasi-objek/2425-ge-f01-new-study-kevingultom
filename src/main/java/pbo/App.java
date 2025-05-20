@@ -15,11 +15,16 @@ public class App {
         Map<String, Student> students = new TreeMap<>();
         Map<String, Course> courses = new TreeMap<>();
         List<Enrollment> enrollments = new ArrayList<>();
+        List<String> commands = new ArrayList<>();
 
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine().trim();
             if (line.equals("---")) break;
+            commands.add(line);
+        }
 
+        // Proses perintah
+        for (String line : commands) {
             String[] parts = line.split("#");
             String command = parts[0];
 
@@ -34,12 +39,6 @@ public class App {
                     }
                     break;
 
-                case "student-show-all":
-                    for (Student student : students.values()) {
-                        System.out.println(student.getNIM() + "|" + student.getNama() + "|" + student.getProgramstudi());
-                    }
-                    break;
-
                 case "course-add":
                     String kode = parts[1];
                     String namaMatkul = parts[2];
@@ -48,12 +47,6 @@ public class App {
 
                     if (!courses.containsKey(kode)) {
                         courses.put(kode, new Course(kode, namaMatkul, semester, kredit));
-                    }
-                    break;
-
-                case "course-show-all":
-                    for (Course course : courses.values()) {
-                        System.out.println(course.getKode() + "|" + course.getNama() + "|" + course.getSemester() + "|" + course.getKredit());
                     }
                     break;
 
@@ -75,6 +68,26 @@ public class App {
                         if (!alreadyEnrolled) {
                             enrollments.add(new Enrollment(enrollStudent, enrollCourse));
                         }
+                    }
+                    break;
+            }
+        }
+
+        // Cetak hasil setelah "---"
+        for (String line : commands) {
+            String[] parts = line.split("#");
+            String command = parts[0];
+
+            switch (command) {
+                case "student-show-all":
+                    for (Student student : students.values()) {
+                        System.out.println(student.getNIM() + "|" + student.getNama() + "|" + student.getProgramstudi());
+                    }
+                    break;
+
+                case "course-show-all":
+                    for (Course course : courses.values()) {
+                        System.out.println(course.getKode() + "|" + course.getNama() + "|" + course.getSemester() + "|" + course.getKredit());
                     }
                     break;
 
@@ -106,6 +119,7 @@ public class App {
                     break;
             }
         }
+
         scanner.close();
     }
 }
