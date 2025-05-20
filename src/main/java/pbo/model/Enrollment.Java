@@ -1,59 +1,31 @@
-
 package pbo.model;
 
-/**
- *
+/*
  * 12S23001 Kevin Gultom
  * 12S23010 Tiffani Butar-butar
- * 
  */
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "enrollment")
-
 public class Enrollment {
-    private static int nextId = 1;
     @Id
-    @Column(name = "id", nullable = false, length = 25)
-    private int id = 0;
+    @GeneratedValue
+    private Long id;
 
-    @Column(name = "student_id", nullable = false, length = 25)
-    private String studentId;
-    @Column(name = "course_id", nullable = false, length = 25)
-    private String courseId;
+    @ManyToOne
+    private Student student;
 
-    public Enrollment() {
+    @ManyToOne
+    private Course course;
+
+    public Enrollment() {}
+
+    public Enrollment(Student student, Course course) {
+        this.student = student;
+        this.course = course;
     }
 
-    public Enrollment(String studentId, String courseId) {
-        this.id = nextId++;
-        this.studentId = studentId;
-        this.courseId = courseId;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
-    }
-
-    public String getCourseId() {
-        return courseId;
-    }
-
-    public void setCourseId(String courseId) {
-        this.courseId = courseId;
-    }
-
+    public Student getStudent() { return student; }
+    public Course getCourse() { return course; }
 }

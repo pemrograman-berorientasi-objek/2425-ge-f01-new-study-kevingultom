@@ -1,76 +1,40 @@
 package pbo.model;
 
-import java.util.*;
-import javax.persistence.*;
+/*
+ * 12S23001 Kevin Gultom
+ * 12S23010 Tiffani Butar-butar
+ */
 
-//10S2202|Jaringan Komputer|4|3
+import javax.persistence.*;
+import java.util.*;
+
 @Entity
-@Table(name = "course")
 public class Course {
     @Id
-    @Column(name = "course_id", nullable = false, length = 255)
-    private String courseId;
-
-    @Column(name = "course_name", nullable = false, length = 255)
-    private String courseName;
-
-    @Column(name = "semester", nullable = false, length = 25)
+    private String code;
+    private String name;
     private int semester;
-    @Column(name = "credit", nullable = false, length = 25)
     private int credit;
-  
 
-    public Course() {
-        // empty constructor
-    }
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    private List<Enrollment> enrollments = new ArrayList<>();
 
-    public Course(String courseId, String courseName, int semester, int credit) {
-        this.courseId = courseId;
-        this.courseName = courseName;
+    public Course() {}
+
+    public Course(String code, String name, int semester, int credit) {
+        this.code = code;
+        this.name = name;
         this.semester = semester;
         this.credit = credit;
-        
-
     }
 
-   
-    public String getCourseId() {
-        return courseId;
-    }
-
-    public void setCourseId(String courseId) {
-        this.courseId = courseId;
-    }
-
-    public String getCourseName() {
-        return courseName;
-    }
-
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
-    }
-
-    public int getSemester() {
-        return semester;
-    }
-
-    public void setSemester(int semester) {
-        this.semester = semester;
-    }
-
-    public int getCredit() {
-        return credit;
-    }
-
-    public void setCredit(int credit) {
-        this.credit = credit;
-    }
+    public String getCode() { return code; }
+    public String getName() { return name; }
+    public int getSemester() { return semester; }
+    public int getCredit() { return credit; }
 
     @Override
     public String toString() {
-        return courseId + "|" + courseName + "|" + semester + "|" + credit;
+        return code + "|" + name + "|" + semester + "|" + credit;
     }
-
-    
-
 }

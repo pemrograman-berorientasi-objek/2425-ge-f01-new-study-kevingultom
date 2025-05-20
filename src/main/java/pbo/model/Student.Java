@@ -1,63 +1,42 @@
 package pbo.model;
 
-/**
- *
+/*
  * 12S23001 Kevin Gultom
  * 12S23010 Tiffani Butar-butar
- * 
  */
-import javax.persistence.*;
 
+import javax.persistence.*;
+import java.util.*;
 
 @Entity
-@Table(name = "student")
 public class Student {
     @Id
-    @Column(name = "student_id", nullable = false, length = 255)
-    private String studentId;
+    private String nim;
 
-    @Column(name = "student_name", nullable = false, length = 255)
+    private String name;
+    private String program;
 
-    private String studentName;
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<Enrollment> enrollments = new ArrayList<>();
 
-    @Column(name = "study_program", nullable = false, length = 25)
-    private String studyProgram;
+    public Student() {}
 
-    public Student() {    }
-
-    public Student(String studentId, String studentName, String studyProgram) {
-        this.studentId = studentId;
-        this.studentName = studentName;
-        this.studyProgram = studyProgram;
+    public Student(String nim, String name, String program) {
+        this.nim = nim;
+        this.name = name;
+        this.program = program;
     }
 
-    public String getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
-    }
-
-    public String getStudentName() {
-        return studentName;
-    }
-
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
-    }
-
-    public String getStudyProgram() {
-        return studyProgram;
-    }
-
-    public void setStudyProgram(String studyProgram) {
-        this.studyProgram = studyProgram;
-    }
+    public String getNim() { return nim; }
+    public String getName() { return name; }
+    public String getProgram() { return program; }
 
     @Override
     public String toString() {
-        return studentId + "|" + studentName + "|" + studyProgram;
+        return nim + "|" + name + "|" + program;
     }
 
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
+    }
 }
