@@ -1,5 +1,8 @@
 package pbo.model;
 
+//12S23001 - Kevin Gultom
+//12S23010 - Tiffany Butar-butar
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
@@ -10,13 +13,13 @@ public class Student {
 
     @Id
     @Column(name = "nim", nullable = false)
-    private String nim;
+    private String NIM;
 
     @Column(name = "nama", nullable = false)
-    private String nama;
+    private String Nama;
 
     @Column(name = "prodi", nullable = false)
-    private String programStudi;
+    private String Programstudi;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(
@@ -26,37 +29,41 @@ public class Student {
     )
     private List<Course> courses = new ArrayList<>();
 
+    @OneToMany(mappedBy = "peserta", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Enrollment> enrollments = new ArrayList<>();
+
     public Student() {
+        // default constructor for JPA
     }
 
-    public Student(String nim, String nama, String programStudi) {
-        this.nim = nim;
-        this.nama = nama;
-        this.programStudi = programStudi;
+    public Student(String NIM, String Nama, String Programstudi) {
+        this.NIM = NIM;
+        this.Nama = Nama;
+        this.Programstudi = Programstudi;
     }
 
-    public String getNim() {
-        return nim;
+    public String getNIM() {
+        return NIM;
     }
 
-    public void setNim(String nim) {
-        this.nim = nim;
+    public void setNIM(String NIM) {
+        this.NIM = NIM;
     }
 
     public String getNama() {
-        return nama;
+        return Nama;
     }
 
-    public void setNama(String nama) {
-        this.nama = nama;
+    public void setNama(String Nama) {
+        this.Nama = Nama;
     }
 
-    public String getProgramStudi() {
-        return programStudi;
+    public String getProgramstudi() {
+        return Programstudi;
     }
 
-    public void setProgramStudi(String programStudi) {
-        this.programStudi = programStudi;
+    public void setProgramstudi(String Programstudi) {
+        this.Programstudi = Programstudi;
     }
 
     public List<Course> getCourses() {
@@ -65,6 +72,14 @@ public class Student {
 
     public void setCourses(List<Course> courseList) {
         this.courses = courseList;
+    }
+
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
+    }
+
+    public void setEnrollments(List<Enrollment> enrollments) {
+        this.enrollments = enrollments;
     }
 
     public boolean enrollCourse(Course course) {
@@ -77,7 +92,7 @@ public class Student {
 
     @Override
     public String toString() {
-        return nim + "|" + nama + "|" + programStudi;
+        return NIM + "|" + Nama + "|" + Programstudi;
     }
 
     @Override
@@ -85,11 +100,11 @@ public class Student {
         if (this == obj) return true;
         if (!(obj instanceof Student)) return false;
         Student other = (Student) obj;
-        return nim.equals(other.nim);
+        return NIM.equals(other.NIM);
     }
 
     @Override
     public int hashCode() {
-        return nim.hashCode();
+        return NIM.hashCode();
     }
 }
