@@ -1,8 +1,5 @@
 package pbo.model;
 
-//12S23001 - Kevin Gultom
-//12S23010 - Tiffany Butar-butar
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
@@ -24,12 +21,10 @@ public class Course {
     @Column(name = "kredit", nullable = false)
     private int kredit;
 
-    @OneToMany(mappedBy = "matakuliah", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "matakuliah", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Enrollment> enrollments = new ArrayList<>();
 
-    public Course() {
-        // Default constructor for JPA
-    }
+    public Course() {}
 
     public Course(String kode, String nama, int semester, int kredit) {
         this.kode = kode;
@@ -74,10 +69,11 @@ public class Course {
         return enrollments;
     }
 
-    public void setEnrollments(List<Enrollment> daftarEnrollments) {
-        this.enrollments = daftarEnrollments;
+    public void setEnrollments(List<Enrollment> enrollments) {
+        this.enrollments = enrollments;
     }
 
+    // Optional helper
     public void addEnrollment(Enrollment enrollment) {
         this.enrollments.add(enrollment);
         enrollment.setCourse(this);

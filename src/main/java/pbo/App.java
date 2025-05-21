@@ -1,7 +1,6 @@
 package pbo;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import javax.persistence.*;
 
 import pbo.model.*;
@@ -17,7 +16,7 @@ public class App {
         factory = Persistence.createEntityManagerFactory("study_plan_pu");
         entityManager = factory.createEntityManager();
 
-        // Hapus semua data lama di database (Enrollment dulu, baru Student & Course)
+        // Bersihkan data lama dari Enrollment, Student, dan Course
         entityManager.getTransaction().begin();
         entityManager.createQuery("DELETE FROM Enrollment").executeUpdate();
         entityManager.createQuery("DELETE FROM Student").executeUpdate();
@@ -32,7 +31,7 @@ public class App {
             String command = parts[0];
 
             switch (command) {
-                case "student-add":
+                case "student-add": {
                     String nim = parts[1];
                     String nama = parts[2];
                     String prodi = parts[3];
@@ -45,8 +44,9 @@ public class App {
                     }
                     entityManager.getTransaction().commit();
                     break;
+                }
 
-                case "course-add":
+                case "course-add": {
                     String kode = parts[1];
                     String namaMK = parts[2];
                     int semester = Integer.parseInt(parts[3]);
@@ -60,8 +60,9 @@ public class App {
                     }
                     entityManager.getTransaction().commit();
                     break;
+                }
 
-                case "enroll":
+                case "enroll": {
                     String nimEnroll = parts[1];
                     String kodeEnroll = parts[2];
 
@@ -86,8 +87,9 @@ public class App {
                         entityManager.getTransaction().rollback();
                     }
                     break;
+                }
 
-                case "student-show":
+                case "student-show": {
                     String targetNIM = parts[1];
                     entityManager.getTransaction().begin();
                     Student stu = entityManager.find(Student.class, targetNIM);
@@ -101,22 +103,25 @@ public class App {
                     }
                     entityManager.getTransaction().commit();
                     break;
+                }
 
-                case "student-show-all":
+                case "student-show-all": {
                     String sqlStudents = "SELECT s FROM Student s ORDER BY s.NIM";
                     List<Student> allStudents = entityManager.createQuery(sqlStudents, Student.class).getResultList();
                     for (Student st : allStudents) {
                         System.out.println(st);
                     }
                     break;
+                }
 
-                case "course-show-all":
+                case "course-show-all": {
                     String sqlCourses = "SELECT c FROM Course c ORDER BY c.semester, c.kode";
                     List<Course> allCourses = entityManager.createQuery(sqlCourses, Course.class).getResultList();
                     for (Course co : allCourses) {
                         System.out.println(co);
                     }
                     break;
+                }
 
                 default:
                     System.out.println("Invalid Input!");

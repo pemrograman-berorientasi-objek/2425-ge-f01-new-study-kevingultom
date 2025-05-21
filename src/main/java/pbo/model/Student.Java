@@ -1,8 +1,5 @@
 package pbo.model;
 
-//12S23001 - Kevin Gultom
-//12S23010 - Tiffany Butar-butar
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
@@ -21,20 +18,11 @@ public class Student {
     @Column(name = "prodi", nullable = false)
     private String Programstudi;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "enrollments",
-        joinColumns = @JoinColumn(name = "student_nim"),
-        inverseJoinColumns = @JoinColumn(name = "course_code")
-    )
-    private List<Course> courses = new ArrayList<>();
-
-    @OneToMany(mappedBy = "peserta", cascade = CascadeType.ALL, orphanRemoval = true)
+    // Ubah ManyToMany jadi OneToMany ke Enrollment
+    @OneToMany(mappedBy = "peserta", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Enrollment> enrollments = new ArrayList<>();
 
-    public Student() {
-        // default constructor for JPA
-    }
+    public Student() {}
 
     public Student(String NIM, String Nama, String Programstudi) {
         this.NIM = NIM;
@@ -66,14 +54,6 @@ public class Student {
         this.Programstudi = Programstudi;
     }
 
-    public List<Course> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(List<Course> courseList) {
-        this.courses = courseList;
-    }
-
     public List<Enrollment> getEnrollments() {
         return enrollments;
     }
@@ -82,12 +62,10 @@ public class Student {
         this.enrollments = enrollments;
     }
 
-    public boolean enrollCourse(Course course) {
-        if (!courses.contains(course)) {
-            courses.add(course);
-            return true;
-        }
-        return false;
+    // Optional helper to add enrollment
+    public void addEnrollment(Enrollment enrollment) {
+        this.enrollments.add(enrollment);
+        enrollment.setStudent(this);
     }
 
     @Override

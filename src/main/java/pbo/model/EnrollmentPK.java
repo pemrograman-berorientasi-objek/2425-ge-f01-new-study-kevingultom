@@ -3,13 +3,13 @@ package pbo.model;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class EnrollmentId implements Serializable {
-    private String peserta;     // nama field harus sama dengan nama field di Enrollment.java
+public class EnrollmentPK implements Serializable {
+    private String peserta;    // harus sama nama dan tipe dengan pk di Enrollment
     private String matakuliah;
 
-    public EnrollmentId() {}
+    public EnrollmentPK() {}
 
-    public EnrollmentId(String peserta, String matakuliah) {
+    public EnrollmentPK(String peserta, String matakuliah) {
         this.peserta = peserta;
         this.matakuliah = matakuliah;
     }
@@ -17,8 +17,8 @@ public class EnrollmentId implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof EnrollmentId)) return false;
-        EnrollmentId that = (EnrollmentId) o;
+        if (!(o instanceof EnrollmentPK)) return false;
+        EnrollmentPK that = (EnrollmentPK) o;
         return Objects.equals(peserta, that.peserta) && Objects.equals(matakuliah, that.matakuliah);
     }
 
